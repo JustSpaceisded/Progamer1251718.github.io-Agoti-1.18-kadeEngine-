@@ -1,87 +1,112 @@
+# How do mods work?
 
-![Kade Engine logo](assets/preload/images/KadeEngineLogo.png)
+ModCore makes it easy to append, replace, or merge files without editing the game's code.
 
-[![AppVeyor](https://img.shields.io/appveyor/build/KadeDev/Kade-Engine-Windows?label=windows%20build)](https://ci.appveyor.com/project/KadeDev/kade-engine-windows/branch/master/artifacts) [![AppVeyor](https://img.shields.io/appveyor/build/KadeDev/Kade-Engine-Macos?label=macOS%20build)](https://ci.appveyor.com/project/KadeDev/kade-engine-macos/branch/master/artifacts)  [![AppVeyor](https://img.shields.io/appveyor/build/KadeDev/Kade-Engine-Linux?label=linux%20build)](https://ci.appveyor.com/project/KadeDev/kade-engine-linux/branch/master/artifacts) [![AppVeyor](https://img.shields.io/appveyor/build/daniel11420/KadeEngineWeb?label=html5&20build)](https://ci.appveyor.com/project/daniel11420/KadeEngineWeb) [![Discord](https://img.shields.io/discord/808039740464300104?label=discord)](https://discord.gg/MG6GQFh52U) [![GitHub issues](https://img.shields.io/github/issues/KadeDev/Kade-Engine)](https://github.com/KadeDev/Kade-Engine/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/KadeDev/Kade-Engine)](https://github.com/KadeDev/Kade-Engine/pulls) []() []()
+Kade Engine's ModCore is powered by [Polymod](https://github.com/larsiusprime/polymod). Polymod is what handles loading the relevant assets, ensuring they are injected properly. It also handles ensuring mods are loaded in the proper order.
 
-![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/KadeDev/Kade-Engine/latest) ![GitHub repo size](https://img.shields.io/github/repo-size/KadeDev/Kade-Engine) ![Lines of code](https://img.shields.io/tokei/lines/github/KadeDev/Kade-Engine) ![Supported platforms](https://img.shields.io/badge/supported%20platforms-windows%2C%20macOS%2C%20linux%2C%20html5-blue) ![GitHub all releases](https://img.shields.io/github/downloads/KadeDev/Kade-Engine/total) ![GitHub](https://img.shields.io/github/license/KadeDev/Kade-Engine) ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/KadeDev/Kade-Engine?include_prereleases&label=latest%20version) 
+Example mod created by [Master Eric](https://twitter.com/EliteMasterEric) > [here](https://github.com/EnigmaEngine/ModCore-Tricky-Mod) <
 
-# Friday Night Funkin': Kade Engine
+## Using mods
 
-### If you want to contribute to Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/CONTRIBUTING.md) first.
-### If you want to build Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/docs/building.md).
+To install a mod, place the folder inside the `mods` folder. To disable or uninstall a mod, take it out of the folder.
 
-## Friday Night Funkin'
-**Friday Night Funkin'** is a rhythm game originally made for Ludum Dare 47 "Stuck In a Loop".
+One day, we'll probably have a modloader that lets you control what order mods are loaded in.
 
-Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](https://www.newgrounds.com/portal/view/770371) ⋅ [source code on GitHub](https://github.com/ninjamuffin99/Funkin)**
-> Uh oh! Your tryin to kiss ur hot girlfriend, but her MEAN and EVIL dad is trying to KILL you! He's an ex-rockstar, the only way to get to his heart? The power of music... 
+## Metadata
 
-## Kade Engine
-**Kade Engine** is a mod for Friday Night Funkin', including a full engine rework, replays, and more.
+You will want several pieces of metadata in order for Polymod to identify and display your mod. Note that only one of these is mandatory.
 
-Links: **[GameBanana mod page](https://gamebanana.com/gamefiles/16761) ⋅ [play in browser](https://funkin.puyo.xyz) ⋅ [latest stable release](https://github.com/KadeDev/Kade-Engine/releases/latest) ⋅ [latest development build (windows)](https://ci.appveyor.com/project/KadeDev/kade-engine-windows/branch/master/artifacts) ⋅ [latest development build (macOS)](https://ci.appveyor.com/project/KadeDev/kade-engine-macos/branch/master/artifacts) ⋅ [latest development build (linux)](https://ci.appveyor.com/project/KadeDev/kade-engine-linux/branch/master/artifacts)**
+* _polymod_meta.json
+  * This file tells Polymod all about your mod, such as name and description. This file is **MANDATORY**.
+  * Learn more about how to write this file below.
+* _polymod_icon.png
+  * This icon will be used by mod browsers in the future. Make sure to provide one, 256x256 should be pretty good.
+* LICENSE.txt
+  * This is the general sofware license used by the mod. Without a license, your mod is under All Rights Reserved.
+* ASSET_LICENSE.txt
+  * This is the license specifically for the mod's assets.
+  * Creative Commons is recommended.
+* CODE_LICENSE.txt (for code/script-specific licensing terms.
+  * GPLv3, Apache, or MIT are recommended.
+* _polymod_pack.txt
+  * Used for modpacks.
 
-**REMEMBER**: This is a **mod**. This is not the vanilla game and should be treated as a **modification**. This is not and probably will never be official, so don't get confused.
+### _polymod_meta.json
 
-## Website ([KadeDev.github.io/kade-engine/](https://KadeDev.github.io/Kade-Engine/))
-If you're looking for documentation, changelogs, or guides, you can find those on the Kade Engine website.
+Here is an example of a valid mod metadata file.
 
-# Previews ([skip](#features))
+Note that both `api_version` and `mod_version` should use valid [Semantic Versioning 2.0.0](https://semver.org/) values.
 
-![Title Screen](art/readme/KadeEngineTitleScreen.png)
+```
+{
+	"title":"Daisy",
+	"description":"This mod has a daisy",
+	"author":"Lars A. Doucet",
+	"api_version":"0.1.0",
+	"mod_version":"1.0.0-alpha",
+	"license":"CC BY 4.0,MIT"
+}
+```
 
-![Week Select](art/readme/KadeEngineWeekSelect.png)
+## Assets
 
-![Freeplay](art/readme/KadeEngineFreeplay.png)
+### Replacing
 
-![Options](art/readme/KadeEngineOptions.png)
+Asset replacements are simple; just place the assets in the relevant subfolder.
 
-![Senpai Gameplay (Hard, Upscroll)](art/readme/KadeEnginePixelGameplay.png)
+Here's what the mod folder might look like for a simple "XXX over Boyfriend" mod.
 
-![Roses Dialogue](art/readme/KadeEngineDialogue.png)
+```
+<modRoot> (name this anything)
+|- _polymod_meta.json
+|- images
+  |- characters
+    |- BOYFRIEND.xml
+    |- BOYFRIEND.png
+```
 
-![Pause Screen](art/readme/KadeEnginePauseScreen.png)
+By the way, 
 
-![Results Screen](art/readme/KadeEngineResultsScreen.png)
+### Appending
 
-![Replay Loader](art/readme/KadeEngineReplayLoader.png)
+Appending to assets is only slightly more involved. Appending is used when you want to add to the end of a particular text file without getting rid of what's already there.
 
-# Features
+For example, using replacement on `introText.txt` will get rid of the base game's intro text values, as well as any that other mods may have added. This may or may not be what you want. Appending will put your values at the end of the file for other mods to add to.
 
- - **New Input System**
-	 - An improved input system, similar to Quaver or Etterna, with less delays, less dropped inputs and other improvements.
- - **More information during gameplay**
-	 - While you're playing, we show you information about how you're doing, such as your accuracy, combo break count, notes per second, and your grade/rating.
- - **Customizable keybinds**
-	 - Instead of being forced to use WASD and the arrow keys, you can set any keybinds you want!
- - **Replays** (in beta)
-	 - Have you ever gotten a crazy score but didn't record? The replay system solves that: it automatically saves a "replay" of your gameplay every time you complete a song, which you can play back inside of the game. 
-	 - Replays just store information about what you're doing, they don't actually record the screen -- so they take up way less space on your disk than videos.
- - **Audio offset**
-	 - If your speakers or headphones are delayed, you can set an offset in the options menu to line the game up with the delay and play with synced audio like intended!
- - **And much, much more!**
-	 - There's so much more in store than just what's listed here! If you can imagine a quality of life feature, it's probably
-	 either already included in Kade Engine or is being worked on!
+To perfrom asset appending, place the assets in the relevant subfolder under the `_append` folder, like so. Note the underscore before it.
 
-# Credits
-### Friday Night Funkin'
- - [ninjamuffin99](https://twitter.com/ninja_muffin99) - Programming
- - [PhantomArcade3K](https://twitter.com/phantomarcade3k) and [Evilsk8r](https://twitter.com/evilsk8r) - Art
- - [Kawai Sprite](https://twitter.com/kawaisprite) - Music
+```
+<modRoot> (name this anything)
+|- _polymod_meta.json
+|- _append
+  |- data
+    |- introText.txt
+```
 
-This game was made with love to Newgrounds and its community. Extra love to Tom Fulp.
-### Kade Engine
-- [KadeDeveloper](https://twitter.com/KadeDeveloper) - Maintainer and lead programmer
-- [The contributors](https://github.com/KadeDev/Kade-Engine/graphs/contributors)
+### Merging
 
+Merging is the most convoluted. Use it only if you can't use replacement or appending.
 
+Merging locates a given key in a file and replaces it with the intended value.
 
-### Shoutouts
-- [GWebDev](https://github.com/GrowtopiaFli) - Video Code
-- [Rozebud](https://github.com/ThatRozebudDude) - Ideas (that I stole)
-- [Puyo](https://github.com/puyoxyz) - Setting up appveyor and a lot of other help
-- [Smokey](https://github.com/Smokey555) - telling me that I should do the tricky asset loading
-- [Poco](https://github.com/poco0317) - math degree (aka most of the fucking math in this project)
-- [Fox](https://twitter.com/FoxeruKun) - circle noteskins
-- [Orbyy](https://twitter.com/orbyynew) - pixel circle noteskins
-- [Shubs](https://github.com/Yoshubs) - Forever Engine dump cache
+* For `CSV` and `TSV` files, the value in the first column is assumed to be the ID. Each ID in the merge CSV is located in the base CSV, and that row is replaced with the row from the merge CSV.
+* For `LINES` text files, Polymod will check 
+* For `PLAINTEXT` text files, Polymod will throw a warning that merging is not supported.
+* For `XML` files, you need to add a child key called `merge` which specifies the key and value to match on. All other values will be replaced. [See here for more info](https://github.com/larsiusprime/polymod#_merge-folder).
+* For `JSON` files, create a single top-level array named `merge`. Each element is an object with two keys: A key `target` like `abc.d[3].e`, and a value `payload`.
+
+## Modpacks
+
+If you have a mod with several parts that you want people to be able to install separately, the best way to do that is to make them separate mods, then make a modpack. This is an empty mod containing only a file defining the other mods that the game should load.
+
+To create a modpack, make a mod containing a `_polymod_pack.txt` file with the following text:
+
+```
+foo:1.0.0,bar:1.*.*,abc,xyz
+```
+
+ModCore will search for, and load, the mods with the IDs `foo`, `bar`, `abc`, and `xyz`, in that order. It will fail any mods that fail the version check (`foo` must be exactly `1.0.0` while `bar` allows any `1.x` version) and only load the mods which don't fail.
+
+## Scripts
+
+Coming soon...
